@@ -7,6 +7,7 @@
 #include <windows.h>
 #include <time.h>
 #include <conio.h>
+#include <iomanip>
 #include <fstream>
 #include "menu.h"
 using namespace std;
@@ -15,7 +16,7 @@ class Contact
 {
 	private:
 		char name[30];
-		char contactNumber[11];
+		char contactNumber[12];
 		char email[30];
 	public:
 		void init();
@@ -27,6 +28,7 @@ class Contact
 		char * getEmail();
 		void display();
 		void addNewContact();
+		void viewAllContacts();
 };
 
 #endif

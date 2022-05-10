@@ -18,7 +18,7 @@ void Contact::init(){
 				contact.addNewContact();
 				break;
 			case 2:
-//				contact.veiwAllContacts();
+				contact.viewAllContacts();
 				break;
 			case 3:
 //				contact.searchContact();
@@ -57,6 +57,15 @@ char * Contact::getEmail(){
 	return email;
 }
 
+void Contact::display(){
+	system("cls");
+	cout << "Name: " << name << endl;
+	cout << "Contact Number: " << contactNumber << endl;
+	cout << "Email: " << email << endl;
+	cout << endl << "Press any key to continue...";
+	getch();
+}
+
 void Contact::addNewContact(){
 	system("cls");
 	cout << "Name: ";
@@ -70,9 +79,29 @@ void Contact::addNewContact(){
 	gets(email);
 	
 	ofstream fout;
-	fout.open("data.contact", ios::app|ios::binary);
+	fout.open("contact.dat", ios::app|ios::binary);
 	fout.write((char*)this, sizeof(*this));
 	fout.close();
 	cout << "Data added successfully" << endl;
 	Sleep(1000);
+}
+
+void Contact::viewAllContacts(){
+	system("cls");
+	ifstream fin;
+	Contact temp;
+	fin.open("contact.dat", ios::in|ios::binary);
+	if(!fin){
+		perror("Error");
+		Sleep(2000);
+	}else{
+		fin.read((char*)&temp, sizeof(temp));
+		while(fin.eof() == 0){
+			cout << setw(30) << temp.name << " " << setw(11) << temp.contactNumber << " " << setw(30) << temp.email << endl;
+			fin.read((char*)&temp, sizeof(temp));
+		}
+	}
+	fin.close();
+	cout << "\nPress any key to continue...";
+	getch();
 }
