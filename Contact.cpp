@@ -10,6 +10,7 @@ void Contact::init(){
 		cout << "3. Search contact" << endl;
 		cout << "4. Update Contact" << endl;
 		cout << "5. Delete Contact" << endl;
+		cout << "6. Exit" << endl;
 		cout << endl << "Enter your choice: ";
 		fflush(stdin);
 		cin >> choice;
@@ -27,7 +28,7 @@ void Contact::init(){
 				contact.updateEmail();
 				break;
 			case 5:
-//				contact.deleteContact();
+				contact.deleteContact();
 				break;
 			case 6:
 				exit(0);
@@ -201,6 +202,42 @@ void Contact::updateEmail(){
 			file.close();
 			cout << "Email updated successfully" << endl;
 			Sleep(1000);
+		}
+	}else{
+		cout << "This contact does not exists" << endl;
+		Sleep(1500);
+	}
+}
+
+void Contact::deleteContact(){
+	char con[12];
+	ifstream fin;
+	ofstream fout;
+	system("cls");
+	cout << "Enter contact number to delete: ";
+	fflush(stdin);
+	gets(con);
+	if(exists(con) == true){
+		fin.open("contact.dat", ios::in | ios::binary);
+		if(!fin){
+			perror("Error");
+			Sleep(1500);
+			exit(1);
+		}else{
+			fout.open("temp.dat", ios::out | ios::binary);
+			fin.read((char*)this, sizeof(*this));
+			while(fin.eof() == 0){
+				if(strcmp(contactNumber, con) != 0){
+					fout.write((char*)this, sizeof(*this));
+				}
+				fin.read((char*)this, sizeof(*this));
+			}
+			fin.close();
+			fout.close();
+			remove("contact.dat");
+			rename("temp.dat", "contact.dat");
+			cout << "Data deleted successfully";
+			Sleep(1500);
 		}
 	}else{
 		cout << "This contact does not exists" << endl;

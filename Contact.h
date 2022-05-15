@@ -32,6 +32,7 @@ class Contact
 		void viewAllContacts();
 		void searchContact();
 		void updateEmail();
+		void deleteContact();
 };
 
 #endif
