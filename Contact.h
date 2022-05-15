@@ -18,6 +18,7 @@ class Contact
 		char name[30];
 		char contactNumber[12];
 		char email[30];
+		bool exists(char [12]);
 	public:
 		void init();
 		void setName(char [30]);
@@ -30,6 +31,7 @@ class Contact
 		void addNewContact();
 		void viewAllContacts();
 		void searchContact();
+		void updateEmail();
 };
 
 #endif

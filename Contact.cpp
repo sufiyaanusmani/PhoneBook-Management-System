@@ -24,11 +24,18 @@ void Contact::init(){
 				contact.searchContact();
 				break;
 			case 4:
-//				contact.updateContact();
+				contact.updateEmail();
 				break;
 			case 5:
 //				contact.deleteContact();
 				break;
+			case 6:
+				exit(0);
+				break;
+			default:
+				system("cls");
+				cout << "Wrong choice entered, please enter a valid choice" << endl;
+				Sleep(1500);
 		}
 	}
 }
@@ -143,4 +150,60 @@ void Contact::searchContact(){
 	}
 	cout << "Press any key to continue...";
 	getch();
+}
+
+bool Contact::exists(char c[12]){
+	bool found = false;
+	ifstream fin;
+	fin.open("contact.dat", ios::in|ios::binary);
+	Contact temp;
+	fin.read((char*)&temp, sizeof(temp));
+	while(fin.eof() == 0){
+		if(strcmp(c, temp.contactNumber) == 0){
+			found = true;
+			break;
+		}
+		fin.read((char*)&temp, sizeof(temp));
+	}
+	fin.close();
+	return found;
+}
+
+void Contact::updateEmail(){
+	system("cls");
+	char con[12], em[30];
+	Contact temp;
+	cout << "Enter your contact number: ";
+	fflush(stdin);
+	gets(con);
+	fstream file;
+	if(exists(con) == true){
+		cout << "Enter new email: ";
+		fflush(stdin);
+		gets(em);
+		file.open("contact.dat", ios::in | ios::out | ios::ate | ios::binary);
+		file.seekg(0);
+		if(!file){
+			perror("Error");
+			Sleep(2000);
+			exit(1);
+		}else{
+			file.read((char*)&temp, sizeof(temp));
+			while(file.eof() == 0){
+				if(strcmp(con, temp.contactNumber) == 0){
+					file.seekp(file.tellp() - sizeof(temp));
+					strcpy(temp.email, em);
+					file.write((char*)&temp, sizeof(temp));
+					break;
+				}
+				file.read((char*)&temp, sizeof(temp));
+			}
+			file.close();
+			cout << "Email updated successfully" << endl;
+			Sleep(1000);
+		}
+	}else{
+		cout << "This contact does not exists" << endl;
+		Sleep(1500);
+	}
 }
