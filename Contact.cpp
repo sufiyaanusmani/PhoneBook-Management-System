@@ -21,7 +21,7 @@ void Contact::init(){
 				contact.viewAllContacts();
 				break;
 			case 3:
-//				contact.searchContact();
+				contact.searchContact();
 				break;
 			case 4:
 //				contact.updateContact();
@@ -94,6 +94,7 @@ void Contact::viewAllContacts(){
 	if(!fin){
 		perror("Error");
 		Sleep(2000);
+		exit(1);
 	}else{
 		fin.read((char*)&temp, sizeof(temp));
 		while(fin.eof() == 0){
@@ -103,5 +104,43 @@ void Contact::viewAllContacts(){
 	}
 	fin.close();
 	cout << "\nPress any key to continue...";
+	getch();
+}
+
+void Contact::searchContact(){
+	system("cls");
+	char nameToSearch[30];
+	Contact temp;
+	int count;
+	ifstream fin;
+	bool found = false;
+	count = 0;
+	cout << "Enter full name of contact to search: ";
+	fflush(stdin);
+	gets(nameToSearch);
+	fin.open("contact.dat", ios::in|ios::binary);
+	if(!fin){
+		perror("Error");
+		Sleep(2000);
+		exit(1);
+	}else{
+		fin.read((char*)&temp, sizeof(temp));
+		while(fin.eof() == 0){
+			if(strcmp(nameToSearch, temp.name) == 0){
+				temp.display();
+				cout << endl;
+				found = true;
+				count++;
+			}
+			fin.read((char*)&temp, sizeof(temp));
+		}
+		fin.close();
+	}
+	if(found == true){
+		cout << endl << "There are " << count << " contact(s) registered by this name" << endl;
+	}else{
+		cout << "Not found" << endl;
+	}
+	cout << "Press any key to continue...";
 	getch();
 }

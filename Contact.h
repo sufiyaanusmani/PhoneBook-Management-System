@@ -29,6 +29,7 @@ class Contact
 		void display();
 		void addNewContact();
 		void viewAllContacts();
+		void searchContact();
 };
 
 #endif
